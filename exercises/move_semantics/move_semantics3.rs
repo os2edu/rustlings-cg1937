@@ -3,10 +3,10 @@
 // (no lines with multiple semicolons necessary!)
 // Execute `rustlings hint move_semantics3` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
+//
 
 fn main() {
-    let vec0 = Vec::new();
+    let vec0 = Vec::new(); // 这是一个不可变的绑定，这个vec0被限制不可变，所以不改变类型就传入函数内使用是不能用push函数的。
 
     let mut vec1 = fill_vec(vec0);
 
@@ -17,7 +17,7 @@ fn main() {
     println!("{} has length {} content `{:?}`", "vec1", vec1.len(), vec1);
 }
 
-fn fill_vec(vec: Vec<i32>) -> Vec<i32> {
+fn fill_vec(mut vec: Vec<i32>) -> Vec<i32> {
     vec.push(22);
     vec.push(44);
     vec.push(66);

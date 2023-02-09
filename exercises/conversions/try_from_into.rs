@@ -23,7 +23,7 @@ enum IntoColorError {
     IntConversion,
 }
 
-// I AM NOT DONE
+//
 
 // Your task is to complete this implementation
 // and return an Ok result of inner type Color.
@@ -38,13 +38,64 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        if all_within_range(tuple) {
+            Ok(Color {
+                red: tuple.0 as u8,
+                green: tuple.1 as u8,
+                blue: tuple.2 as u8,
+            })
+        } else {
+            Err(IntoColorError::IntConversion)
+        }
     }
+}
+
+fn all_within_range(tuple: (i16, i16, i16)) -> bool {
+    let min = 0;
+    let max = 255;
+    tuple.0 >= min
+        && tuple.0 <= max
+        && tuple.1 >= min
+        && tuple.1 <= max
+        && tuple.2 >= min
+        && tuple.2 <= max
+}
+
+fn all_within_range_arr(arr: [i16; 3]) -> bool {
+    let min = 0;
+    let max = 255;
+    arr[0] >= min
+        && arr[0] <= max
+        && arr[1] >= min
+        && arr[1] <= max
+        && arr[2] >= min
+        && arr[2] <= max
+}
+
+fn all_within_range_arr_ref(arr: &[i16]) -> bool {
+    let min = 0;
+    let max = 255;
+    arr[0] >= min
+        && arr[0] <= max
+        && arr[1] >= min
+        && arr[1] <= max
+        && arr[2] >= min
+        && arr[2] <= max
 }
 
 // Array implementation
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        if all_within_range_arr(arr) {
+            Ok(Color {
+                red: arr[0] as u8,
+                green: arr[1] as u8,
+                blue: arr[2] as u8,
+            })
+        } else {
+            Err(IntoColorError::IntConversion)
+        }
     }
 }
 
@@ -52,6 +103,18 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        if slice.len() != 3 {
+            return Err(IntoColorError::BadLen);
+        }
+        if all_within_range_arr_ref(slice) {
+            Ok(Color {
+                red: slice[0] as u8,
+                green: slice[1] as u8,
+                blue: slice[2] as u8,
+            })
+        } else {
+            Err(IntoColorError::IntConversion)
+        }
     }
 }
 
